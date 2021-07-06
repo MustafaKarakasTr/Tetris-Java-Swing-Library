@@ -135,7 +135,7 @@ public class GamePanel extends JPanel implements ActionListener{
 			if(filled == true) {
 				//destroyLine(coordinatesOfBlock[i][1]);
 				linesShouldBeDestroyed.add(coordinatesOfBlock[i][1]);
-				System.out.println(coordinatesOfBlock[i][1]);
+				//System.out.println(coordinatesOfBlock[i][1]);
 				score+=10;
 			}
 			
