@@ -117,8 +117,15 @@ public class GamePanel extends JPanel implements ActionListener{
 	private void destroyFilledLines() {
 		//precondition : last block does not move no longer
 		ArrayList<Integer> linesShouldBeDestroyed = new ArrayList<Integer>();
+		ArrayList<Integer> readedY =  new ArrayList<Integer>();
 		for(int i=0;i<coordinatesOfBlock.length;i++) {
 			boolean filled = true;
+			if(readedY.contains(coordinatesOfBlock[i][1])) {
+				continue;
+			}
+			else {
+				readedY.add(coordinatesOfBlock[i][1]);
+			}
 			for(int j=0;j<SCREEN_WIDTH/UNIT_SIZE;j++) {
 				if(!blocks.contains(new Coordinate(j*UNIT_SIZE,coordinatesOfBlock[i][1],null))) {
 					filled = false;
@@ -128,6 +135,7 @@ public class GamePanel extends JPanel implements ActionListener{
 			if(filled == true) {
 				//destroyLine(coordinatesOfBlock[i][1]);
 				linesShouldBeDestroyed.add(coordinatesOfBlock[i][1]);
+				System.out.println(coordinatesOfBlock[i][1]);
 				score+=10;
 			}
 			
@@ -390,7 +398,7 @@ public class GamePanel extends JPanel implements ActionListener{
 	}
 	}
 	private boolean collision() {
-		//when it goes down u degýstýr
+		//when it goes down u degÄ±stÄ±r
 		for(int i=0;i<coordinatesOfBlock.length;i++) { 
 			if(coordinatesOfBlock[i][1] == SCREEN_HEIGHT - UNIT_SIZE || (blocks.contains(new Coordinate(coordinatesOfBlock[i][0], coordinatesOfBlock[i][1]+UNIT_SIZE)) && whenItGoesDown == LEVEL-1)) {
 				return true;
