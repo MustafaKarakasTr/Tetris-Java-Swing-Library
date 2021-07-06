@@ -331,7 +331,7 @@ public class GamePanel extends JPanel implements ActionListener{
 			g.setColor(comingColor);
 			g.fillRect(coordinatesOfBlock[i][0], coordinatesOfBlock[i][1], UNIT_SIZE, UNIT_SIZE);
 		}
-		g.setColor(Color.black);
+		g.setColor(Color.darkGray );
 		
 		for(int i=0;i<SCREEN_WIDTH/UNIT_SIZE;i++) {
 			g.drawLine(i*UNIT_SIZE, 0, i*UNIT_SIZE, SCREEN_HEIGHT);
