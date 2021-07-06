@@ -7,4 +7,3 @@ Use Direction Keys to play
 
 Up : rotate
 Down : speedy blocks
-Rigth
