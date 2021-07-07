@@ -24,14 +24,17 @@ public class GamePanel extends JPanel implements ActionListener{
 	private int score = 0;
 	private static int whenItGoesDown = 0;
 	private static final int LEVEL = 3;
-	private static final int SCREEN_WIDTH = 275;
-	private static final int SCREEN_HEIGHT= 500;
-	private static final int UNIT_SIZE = 25;
+	private static final int SCREEN_WIDTH = 400;
+	private static final int SCREEN_HEIGHT= 800;
+	
+	private static final int UNIT_SIZE = 40;
+	private static final int MAX_SCREEN_WIDTH = 5*UNIT_SIZE+SCREEN_WIDTH;
 	private Random random;
 	private Color comingColor;
 	private boolean running;
 	private static final int DELAY = 50;
 	private Block block = null;
+	private Block nextBlock = null;
 	private int[][] coordinatesOfBlock;
 	private enum Directions{Left,Right,Fast,Rotate,Normal};
 	private Directions direction;
@@ -40,7 +43,7 @@ public class GamePanel extends JPanel implements ActionListener{
 	Timer timer;
 	public GamePanel() {
 		random = new Random();
-		this.setPreferredSize(new Dimension(SCREEN_WIDTH,SCREEN_HEIGHT));
+		this.setPreferredSize(new Dimension(MAX_SCREEN_WIDTH,SCREEN_HEIGHT));
 		this.setBackground(Color.black);
 		this.setFocusable(true);
 		this.addKeyListener(new MyKeyAdapter());
@@ -301,9 +304,7 @@ public class GamePanel extends JPanel implements ActionListener{
 				}
 				
 			}
-		} else {
-			
-		}
+		} 
 	}
 	//private Graphics graphic;
 	private void draw(Graphics g) {
@@ -311,10 +312,29 @@ public class GamePanel extends JPanel implements ActionListener{
 			g.setColor(Color.red);
 			g.setFont( new Font("Ink Free",Font.BOLD, 40));
 			FontMetrics metrics = getFontMetrics(g.getFont());
-			g.drawString("Score: "+score, (SCREEN_WIDTH - metrics.stringWidth("Score: "+score))/2, g.getFont().getSize());
+			g.drawString("Score: "+score, (MAX_SCREEN_WIDTH - metrics.stringWidth("Score: "+score))/2, g.getFont().getSize());
 			return;
 		}
-		
+		g.setColor(Color.yellow);
+		g.setFont( new Font("Ink Free",Font.BOLD, 40));
+		FontMetrics metrics = getFontMetrics(g.getFont());
+		g.drawString("Next Block", (MAX_SCREEN_WIDTH - metrics.stringWidth("Next Block")), g.getFont().getSize());
+		if(nextBlock != null) {
+			g.setColor(nextColor);
+			int [][] next = nextBlock.getCoordinates();
+			for(int i=0;i<4;i++) {
+				int x =MAX_SCREEN_WIDTH - 3*UNIT_SIZE +(next[i][0] * UNIT_SIZE);
+				int y = 3*UNIT_SIZE+next[i][1]*UNIT_SIZE;
+				g.setColor(nextColor);
+				g.fillRect( x,y,UNIT_SIZE, UNIT_SIZE);
+				g.setColor(Color.darkGray);
+				g.drawLine(x+UNIT_SIZE, y, x+UNIT_SIZE, y+UNIT_SIZE);
+				g.setColor(Color.darkGray);
+				g.drawLine(x, y, x, y+UNIT_SIZE);
+				g.setColor(Color.darkGray);
+				g.drawLine(x, y, x+UNIT_SIZE, y);
+			}
+		}
 		//graphic = g;
 		//Iterator<ArrayList<ArrayList<Integer>>> iter = blocks.iterator();
 		for(Coordinate coordinate: blocks) {
@@ -333,7 +353,7 @@ public class GamePanel extends JPanel implements ActionListener{
 		}
 		g.setColor(Color.darkGray );
 		
-		for(int i=0;i<SCREEN_WIDTH/UNIT_SIZE;i++) {
+		for(int i=0;i<=SCREEN_WIDTH/UNIT_SIZE;i++) {
 			g.drawLine(i*UNIT_SIZE, 0, i*UNIT_SIZE, SCREEN_HEIGHT);
 		}
 		for(int i=0;i<SCREEN_HEIGHT/UNIT_SIZE;i++) {
@@ -343,9 +363,9 @@ public class GamePanel extends JPanel implements ActionListener{
 		g.fillRect(UNIT_SIZE * 5, UNIT_SIZE*2, 50, 50);*/
 		g.setColor(Color.red);
 		g.setFont( new Font("Ink Free",Font.BOLD, 20));
-		FontMetrics metrics = getFontMetrics(g.getFont());
+		 metrics = getFontMetrics(g.getFont());
 		g.drawString("Score: "+score, (SCREEN_WIDTH - metrics.stringWidth("Score: "+score))/2, g.getFont().getSize());
-	
+		
 		
 	}
 	public class MyKeyAdapter extends KeyAdapter{
@@ -398,7 +418,7 @@ public class GamePanel extends JPanel implements ActionListener{
 	}
 	}
 	private boolean collision() {
-		//when it goes down u degıstır
+		//when it goes down u degÄ±stÄ±r
 		for(int i=0;i<coordinatesOfBlock.length;i++) { 
 			if(coordinatesOfBlock[i][1] == SCREEN_HEIGHT - UNIT_SIZE || (blocks.contains(new Coordinate(coordinatesOfBlock[i][0], coordinatesOfBlock[i][1]+UNIT_SIZE)) && whenItGoesDown == LEVEL-1)) {
 				return true;
@@ -435,6 +455,7 @@ public class GamePanel extends JPanel implements ActionListener{
 			coordinatesOfBlock[i][1] =(coordinatesOfBlock[i][1] * UNIT_SIZE);
 		}
 	}
+	private Color nextColor;
 	private void newBlock() {
 		int colorChooser = random.nextInt(3);
 		comingColor = new Color(random.nextInt(155)+((colorChooser % 3 == 0) ? 100 : 0),random.nextInt(155)+((colorChooser % 3 == 1) ? 100 : 0),random.nextInt(155)+((colorChooser % 3 == 2) ? 100 : 0));
@@ -456,7 +477,38 @@ public class GamePanel extends JPanel implements ActionListener{
 		} else {
 			block = new TBlock();
 		}
+		
+		Block nextBlock2 = block;
+		if(nextBlock == null) {
+			i= random.nextInt(100);
+			nextColor = new Color(random.nextInt(155)+((colorChooser % 3 == 0) ? 100 : 0),random.nextInt(155)+((colorChooser % 3 == 1) ? 100 : 0),random.nextInt(155)+((colorChooser % 3 == 2) ? 100 : 0));
+			
+			if(i % numberOfShapes == 0)
+				nextBlock = new Block();
+			else if(i%numberOfShapes == 1) {
+				nextBlock = new SquareBlock();
+			} else if(i%numberOfShapes == 2){
+				nextBlock = new SBlock();
+			} else if(i%numberOfShapes == 3){
+				nextBlock = new SBlock2();
+			}else if(i%numberOfShapes == 4){
+				nextBlock = new LBlock();
+			}
+			else if(i%numberOfShapes == 5){
+				nextBlock = new LBlock2();
+			} else {
+				nextBlock = new TBlock();
+			}
+		}
+		block = nextBlock;
+		//comingColor = new Color(random.nextInt(155)+((colorChooser % 3 == 0) ? 100 : 0),random.nextInt(155)+((colorChooser % 3 == 1) ? 100 : 0),random.nextInt(155)+((colorChooser % 3 == 2) ? 100 : 0));
+		
+		comingColor = nextColor;
+		nextColor = new Color(random.nextInt(155)+((colorChooser % 3 == 0) ? 100 : 0),random.nextInt(155)+((colorChooser % 3 == 1) ? 100 : 0),random.nextInt(155)+((colorChooser % 3 == 2) ? 100 : 0));
+		
+		nextBlock = nextBlock2;
 		direction = Directions.Normal;
+		
 		coordinatesOfBlock = block.getCoordinates();
 		setCoordinatesInTable();
 		
