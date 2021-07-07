@@ -10,4 +10,4 @@ Use Direction Keys to play
 Up : rotate
 Down : speedy blocks
 
-worst player's gameplay: https://www.youtube.com/watch?v=MCOrpW3GJbk
+worst player's gameplay: https://youtu.be/9oXEo23ySZs
