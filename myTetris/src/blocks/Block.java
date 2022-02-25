@@ -30,49 +30,7 @@ public class Block {
 			temp[i][1] = coordinates[i][1];
 		}
 		
-		if(vertical()) {
-			//System.out.println("VErtical");
-			//for(int i=screen_width-unit_size;i>screen_width)
-			
-			/*for(int i=0;i<2;i++) {
-				if(coordinates[0][0] > screen_width-3*unit_size //|| set.contains(new Coordinate(coordinates[0][0]+unit_size, coordinates[2][1])
-						) {
-					for(int j=0;j<coordinates.length;j++) {
-						coordinates[j][0] -= unit_size;
-					}
-				}
-			
-				
-			}
-			if(set.contains(new Coordinate(coordinates[0][0]+unit_size, coordinates[2][1]))){
-				for(int i=0;i<2;i++) {
-					for(int j=0;j<coordinates.length;j++) {
-						coordinates[j][0] -= unit_size;
-					}
-				}
-			}
-			if(coordinates[0][0] == 0 || set.contains(new Coordinate(coordinates[0][0]-unit_size,coordinates[2][1]))) {
-				for(int i=0;i<coordinates.length;i++) {
-					coordinates[i][0] += unit_size;
-				}
-			}*/
-			changeBy90(unit_size);
-			
-			//setHorizantal(unit_size);
-			
-		} else {
-			//test
-			/*if(coordinates[2][0]>coordinates[1][0]) {
-				pivotIndex = 1;
-			} else {
-				pivotIndex = 2;
-			}*/
-			changeBy90(unit_size);
-			//pivotIndex = 2;
-			/*for(int i=0;i<4;i++) {
-				coordinates[i][1] -=unit_size;
-			}*/
-		}
+		changeBy90(unit_size);
 		for(int i=0;i<2;i++) {
 			if(lessThanZero()) {
 				increaseX(unit_size);
@@ -80,14 +38,8 @@ public class Block {
 				increaseX(-unit_size);
 			}
 		}
-		
-		/*System.out.println("New");
-		for (int i = 0; i < temp.length; i++) {
-			System.out.println("Temp:"+temp[i][0] + " "+ temp[i][1]);
-			System.out.println("Coo:"+coordinates[i][0] + " "+ coordinates[i][1]);
-		}*/
+
 		if(collision(set) || !(inBorders(screen_width,screen_height))) {
-			//System.out.println("AAAA");
 			
 			if(makeCollisionDisappear(set,screen_width,unit_size,screen_height)) {
 				//do not forget to checkBorders
@@ -127,7 +79,7 @@ public class Block {
 		return false;
 	}
 	protected  boolean makeCollisionDisappear(HashSet<Coordinate> set,int screen_width,int unit_size,int screen_height) {
-		// 2 birim sola 2 birim saða kaydýrýp hepsýný denýyor oldu mu diye
+		// 2 birim sola 2 birim saÃ°a kaydirip hepsini deniyor oldu mu diye
 		
 		for(int i=0;i<2;i++) {
 			increaseX(-unit_size);
